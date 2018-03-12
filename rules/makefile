@@ -1,0 +1,2 @@
+
+# old-fashioned suffix rules
