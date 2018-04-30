@@ -1,2 +1,4 @@
 
-# old-fashioned suffix rules
+expand:
+	echo $(HOME)
+
