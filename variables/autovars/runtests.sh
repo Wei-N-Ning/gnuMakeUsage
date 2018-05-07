@@ -8,10 +8,20 @@ function expectFirstPrerequisite() {
     make -s -f first_prerequisite.mk
 }
 
-function expectAllRerequisitesNewerThanTarget() {
+function expectAllPrerequisitesNewerThanTarget() {
     make -s -f all_newer_prerequisites.mk
+}
+
+function expectAllPrerequisitesNoDups() {
+    make -s -f all_prerequisites.mk
+}
+
+function expectAllPrerequisitesWithDups() {
+    make -s -f all_prerequisites_dups.mk
 }
 
 expectTarget
 expectFirstPrerequisite
-expectAllRerequisitesNewerThanTarget
+expectAllPrerequisitesNewerThanTarget
+expectAllPrerequisitesNoDups
+expectAllPrerequisitesWithDups
