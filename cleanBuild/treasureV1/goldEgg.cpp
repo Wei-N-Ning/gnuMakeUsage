@@ -1,6 +1,6 @@
 //
 // Created by Wei on 9/07/2017.
-//
+//  
 
 #include "goldEgg.hpp"
 

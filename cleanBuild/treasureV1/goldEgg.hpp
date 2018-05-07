@@ -11,7 +11,7 @@ class GoldEgg {
 public:
     GoldEgg(double weight);
     double weight();
-private:
+private:    
     double m_weight;
 };
 
