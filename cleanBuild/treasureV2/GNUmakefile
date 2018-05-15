@@ -10,15 +10,14 @@ $(CXXFLAGS) \
 sources := goldEgg.cpp holyGrail.cpp
 objects := $(subst .cpp,.o,$(sources))
 
-all: $(objects) libtreasureV1.a
+all: $(objects) libtreasureV2.a
 
 $(objects): %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-libtreasureV1.a: $(objects)
+libtreasureV2.a: $(objects)
 	$(AR) rcs $(@) $(<)
 
 .PHONY: clean
 clean:
-	rm -f $(objects) libtreasureV1.a
-
+	rm -f $(objects) libtreasureV2.a
