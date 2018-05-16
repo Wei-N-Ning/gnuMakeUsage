@@ -1,28 +1,30 @@
 
+CC := gcc
 INCLUDE_FLAGS := -Imodel
+LINK_FLAGS := -L. -lmodel
 
-object_core := core 
-object_model := model
+objects := core model
+objfiles := model/model.o core/core.o
+lib := libmodel.so
+exe := main
 
-objects := $(object_core) $(object_model)
+.PHONY: all $(exe) $(lib) $(objects)
+all: $(exe)
 
-.PHONY: all $(objects) libmodel.so main
-all: $(objects) libmodel.so main
+$(exe): app/main.c $(lib)
+	$(CC) $(INCLUDE_FLAGS) -o $(@) $(^) $(LINK_FLAGS)
 
-libmodel.so: $(objects)
-	gcc -shared -o $(@) model/model.o core/core.o
-
-main: app/main.c libmodel.so
-	gcc $(INCLUDE_FLAGS) app/main.c -o $(@) -Wl,-L. -Wl,-lmodel
+$(lib): $(objects)
+	$(CC) -shared -fPIC -o $(@) $(objfiles)
 
 $(objects):
-	$(MAKE) --directory=core
-	$(MAKE) --directory=model
+	$(MAKE) --directory=core CFLAGS="-fPIC -fvisibility=hidden"
+	$(MAKE) --directory=model CFLAGS="-fPIC"
 
 .PHONY: clean
 clean:
-	$(MAKE) --directory=core clean
-	$(MAKE) --directory=model clean
-	rm -f *.so *.o main
-
-
+	for d in $(objects); \
+	do \
+		$(MAKE) --directory=$$d clean; \
+	done
+	rm -f $(lib) $(exe)
