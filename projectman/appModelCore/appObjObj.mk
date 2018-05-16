@@ -1,15 +1,16 @@
-libcore := core
-libmodel := model
+objects := core model
+exe := app
 
-.PHONY: all
-all:
-	$(MAKE) --directory=core
-	$(MAKE) --directory=model
-	$(MAKE) --directory=app
+.PHONY: all $(exe) $(objects)
+all: $(exe)
+$(exe) $(objects):
+	$(MAKE) --directory=$(@)
+
+$(exe): $(objects)
 
 .PHONY: clean
 clean:
-	$(MAKE) --directory=core clean
-	$(MAKE) --directory=model clean
-	$(MAKE) --directory=app clean
-
+	for d in $(exe) $(objects); \
+	do \
+		$(MAKE) --directory=$$d clean; \
+	done
