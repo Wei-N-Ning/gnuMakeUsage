@@ -4,13 +4,7 @@ exe := app
 .PHONY: all $(exe) $(objects)
 all: $(exe)
 $(exe) $(objects):
-	$(MAKE) --directory=$(@)
+	$(MAKE) --directory=$(@) $(TARGET)
 
 $(exe): $(objects)
 
-.PHONY: clean
-clean:
-	for d in $(exe) $(objects); \
-	do \
-		$(MAKE) --directory=$$d clean; \
-	done

@@ -18,7 +18,7 @@ function build() {
 }
 
 function clean() {
-    make -s -f appObjObj.mk clean
+    make -s -f appObjObj.mk TARGET=clean
 }
 
 function verifyBuild() {
