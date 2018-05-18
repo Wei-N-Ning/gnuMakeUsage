@@ -10,11 +10,11 @@ function setUp() {
 }
 
 function build() {
-    make -s -f generator.mk
+    make -f generator.mk
 }
 
 function clean() {
-    make -s -f generator.mk clean
+    make -f generator.mk clean
 }
 
 function verifyBuild() {
