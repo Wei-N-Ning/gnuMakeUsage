@@ -19,5 +19,6 @@ function tearDown() {
 setUp
 build
 verifyBuild
+touch main.c  # only rebuilding the end product
 build
 tearDown
