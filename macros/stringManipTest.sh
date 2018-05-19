@@ -6,6 +6,7 @@ function setUp() {
 
 function build() {
     make -s -f stringManip.mk PatternSub
+    make -s -f stringManip.mk VariableSub
 }
 
 function tearDown() {

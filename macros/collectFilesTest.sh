@@ -6,6 +6,7 @@ function clean() {
 
 function build() {
     make -s -f collectFiles.mk > /tmp/_
+    make -s -f collectFiles.mk FilesWithExt
 }
 
 function verifyBuild() {
