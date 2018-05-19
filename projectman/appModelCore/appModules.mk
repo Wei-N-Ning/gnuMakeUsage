@@ -10,6 +10,10 @@ OBJS :=
 EXE :=
 SRCS :=
 
+# see Make book P119 (139) for the reason of defining
+# an empty target like this
+all:
+
 # each module should define:
 # MOD_SRCS
 # MOD_C_SRCS or MOD_CXX_SRCS

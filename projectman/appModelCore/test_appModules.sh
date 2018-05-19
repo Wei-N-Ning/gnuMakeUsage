@@ -5,7 +5,7 @@ function setUp() {
 }
 
 function build() {
-    make -f appModules.mk all
+    make -f appModules.mk
 }
 
 function verifyBuild() {
