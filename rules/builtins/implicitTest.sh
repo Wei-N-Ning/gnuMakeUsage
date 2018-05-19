@@ -18,5 +18,6 @@ function tearDown() {
 
 setUp
 build
-( verifyBuild ) && build
+verifyBuild
+build
 tearDown
