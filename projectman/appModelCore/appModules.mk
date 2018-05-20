@@ -2,7 +2,11 @@
 # each sub directory a module
 
 RM := rm
-CC := $(if $(shell uname) == Linux,gcc,cc)
+ifeq ($(shell uname), FreeBSD)
+CC := cc
+else
+CC := gcc
+endif
 
 SHLIBS :=
 STLIBS :=

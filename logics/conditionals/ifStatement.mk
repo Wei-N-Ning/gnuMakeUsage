@@ -2,6 +2,12 @@ define callApp
 /usr/bin/env python -c "import os;print(os.environ['HOME'])"
 endef
 
+ifeq ($(shell uname), FreeBSD)
+CC := cc
+else
+CC := gcc
+endif
+
 define nullApp
 /usr/bin/env bash -c "printf 'null\n'"
 endef
@@ -13,4 +19,4 @@ __:
     # conditional macro evaluation
 	$(if $(iddqd),$(callApp),$(nullApp))
 
-	@echo $(if $(shell uname) == Linux,gcc,cc)
+	@echo $(CC)
