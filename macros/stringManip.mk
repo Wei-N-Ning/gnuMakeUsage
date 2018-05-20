@@ -12,13 +12,13 @@ VARSUB := $(INPUTS:.in=.ddqd)
 # extract the dso version from a name-version pattern
 # see also:
 # https://stackoverflow.com/questions/9551416/gnu-make-how-to-join-list-and-separate-it-with-separator
-DOOM_VER_TAG := DOOM-1.11.23
+# see also:
+# Make book P156
+DOOM_VER_TAG := DOOM 1.11.23
 _space_ :=
-_space_ := $(_space_) $(_space_)
-DOOM_DSO_VER := $(subst $(_space_),.,\
-$(wordlist 1,2,\
-$(subst ., ,\
-$(subst -, ,$(DOOM_VER_TAG)))))
+_space_ := $(__) $(__)
+DOOM_DSO_VER := $(subst $(_space_),?,$(DOOM_VER_TAG))
+DOOM_SPACE_VER := $(subst ?,$(_space_),$(DOOM_DSO_VER))
 
 VARIABLES :=  asd 2 some  e 13 1
 VARIABLES_JOINED := $(subst $(_space_),.,$(strip $(VARIABLES)))
@@ -39,5 +39,5 @@ StripJoinStrings:
 	@echo $(VARIABLES_JOINED)
 
 DoomMaVer:
-	@echo $(DOOM_DSO_VER)
+	@echo $(DOOM_DSO_VER) $(DOOM_SPACE_VER)
 
