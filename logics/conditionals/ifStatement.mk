@@ -12,3 +12,5 @@ __:
 	
     # conditional macro evaluation
 	$(if $(iddqd),$(callApp),$(nullApp))
+
+	@echo $(if $(shell uname) == Linux,gcc,cc)

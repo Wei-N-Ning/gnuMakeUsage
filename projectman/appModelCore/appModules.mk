@@ -2,7 +2,7 @@
 # each sub directory a module
 
 RM := rm
-CC := gcc
+CC := $(if $(shell uname) == Linux,gcc,cc)
 
 SHLIBS :=
 STLIBS :=
