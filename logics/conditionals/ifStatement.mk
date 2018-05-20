@@ -2,11 +2,7 @@ define callApp
 /usr/bin/env python -c "import os;print(os.environ['HOME'])"
 endef
 
-ifeq ($(shell uname), FreeBSD)
-CC := cc
-else
-CC := gcc
-endif
+CC := $(if $(filter $(shell uname),Linux),gnu-cc,unix-cc)
 
 define nullApp
 /usr/bin/env bash -c "printf 'null\n'"
