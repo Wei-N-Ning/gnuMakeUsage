@@ -7,8 +7,8 @@ define nullApp
 endef
 
 __:
-	# conditional expansion
+    # conditional expansion
 	@echo $(if $(iddqd),inv,off)
 	
-	# conditional macro evaluation
+    # conditional macro evaluation
 	$(if $(iddqd),$(callApp),$(nullApp))

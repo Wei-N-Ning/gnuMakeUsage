@@ -1,6 +1,6 @@
 
 __:
-	@echo $(wildcard *makefile)
+	@echo $(wildcard /tmp/*.tmp)
 	@echo $(PWD)
 	@echo $(dir $(PWD))
 	@echo $(notdir $(PWD))
