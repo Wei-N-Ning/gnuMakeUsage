@@ -8,6 +8,7 @@ function build() {
     make -s -f stringManip.mk PatternSub
     make -s -f stringManip.mk VariableSub
     make -s -f stringManip.mk JoinStrings
+    make -s -f stringManip.mk StripJoinStrings
     make -s -f stringManip.mk DoomMaVer
 }
 

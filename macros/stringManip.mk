@@ -20,6 +20,9 @@ $(wordlist 1,2,\
 $(subst ., ,\
 $(subst -, ,$(DOOM_VER_TAG)))))
 
+VARIABLES :=  asd 2 some  e 13 1
+VARIABLES_JOINED := $(subst $(_space_),.,$(strip $(VARIABLES)))
+
 ShowInputs:
 	@echo $(INPUTS)
 
@@ -32,5 +35,9 @@ VariableSub:
 JoinStrings:
 	@echo $(subst $(_space_),.,a b c d)
 
+StripJoinStrings:
+	@echo $(VARIABLES_JOINED)
+
 DoomMaVer:
 	@echo $(DOOM_DSO_VER)
+
