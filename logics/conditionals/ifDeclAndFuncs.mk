@@ -1,4 +1,8 @@
-
+# this example shows that there are two types of
+# if syntaxes, one used in a variable definition, one
+# used inside a command
+# for the second type, ifeq is not accepted
+# one have to use $(if $(filter A,B),...,...) instead
 
 ifeq ($(shell uname), Linux)
     GNU_MAKE := yes
