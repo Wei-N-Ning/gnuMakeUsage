@@ -20,9 +20,8 @@ class _Logger(object):
         self.logger_name = logger_name
         self.log_path = log_path
 
-    @staticmethod
-    def formatter():
-        return logging.Formatter('%(asctime)s %(message)s')
+    def formatter(self):
+        return logging.Formatter('%(asctime)s || {} || %(message)s'.format(self.logger_name))
 
     def log_args(self):
         logger = logging.getLogger(self.logger_name)
