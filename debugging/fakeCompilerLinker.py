@@ -51,9 +51,9 @@ class FakeCompiler(object):
     def compile(self):
         for idx, _ in enumerate(sys.argv):
             if _ == '-o':
-                self.out_path = sys.argv[idx + 1]
+                self.out_path = sys.argv[idx + 1].split(',')[-1]
             elif _.endswith('.d'):
-                self.dep_path = _
+                self.dep_path = _.split(',')[-1]
             elif '-Wl' in _ or _.startswith('-L') or _.startswith('-l'):
                 self.to_link = True
         assert self.out_path, 'missing output path'
@@ -76,7 +76,7 @@ class FakeLinker(object):
     def link(self):
         for idx, _ in enumerate(sys.argv):
             if _ == '-o':
-                self.out_path = sys.argv[idx + 1]
+                self.out_path = sys.argv[idx + 1].split(',')[-1]
         assert self.out_path, 'missing output path'
         with open(self.out_path, 'wb') as fp:
             fp.write(self.contents)
