@@ -3,7 +3,12 @@ usage:
 
 create an executable wrapping the fake compiler or fake linker
 
-then:
+e.g.
+import fakeCompilerLinker
+compiler = fakeCompilerLinker.FakeCompiler('cxxfake', '/tmp/cxxfake.log')
+compiler.compile()
+
+then pass the executable path to make
 
 make CC=... CXX=... NVCC=... LD=...
 """
