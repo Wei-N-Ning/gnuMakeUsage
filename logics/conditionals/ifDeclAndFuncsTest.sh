@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-function build() {
-    make -f ifDeclAndFuncs.mk
+setUp() {
+    set -e
 }
 
-build
+testDeclaration() {
+    make -f ifDeclAndFuncs.mk
+    make -f ifDeclAndFuncs.mk print_abi
+    make SOME_VAR=1 -f ifDeclAndFuncs.mk print_abi
+}
+
+setUp
+testDeclaration
