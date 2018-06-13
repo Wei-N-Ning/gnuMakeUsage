@@ -83,17 +83,25 @@ class FakeLinker(object):
 
 
 class GetIncludeDirs(object):
-    
-    def __init__(self, file_path):
+    """
+    example of excludes: 
+    /vol/bob/check, /vol/bob/built/linux64/L48/dev/koru/work
+    """
+    def __init__(self, file_path, prefixes_to_exclude=None):
         self.file_path = file_path
         self._paths = set()
+        self._prefixes_to_exclude = prefixes_to_exclude or list()
+    
+    def _to_exclude(self, path):
+        for px in self._prefixes_to_exclude:
+            if path.startswith(px):
+                return True
+        return False
 
     def _do(self, path):
         if path in self._paths:
             return
-        if path.starswith('/vol/bob/check'):
-            return
-        if path.startswith('/vol/bob/built/linux64/L48/dev'):
+        if self._to_exclude(path):
             return
         self._paths.add(path)
 
