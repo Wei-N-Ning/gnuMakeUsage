@@ -18,6 +18,8 @@ from __future__ import print_function
 import logging
 import sys
 
+import shlex
+import subprocess
 
 class _Logger(object):
 
@@ -38,14 +40,38 @@ class _Logger(object):
         logger.info(' '.join(sys.argv[1:]))
 
 
+class ObjGenerator(object):
+    
+    def __init__(self, compl):
+        self.compl = compl
+
+    def gen(self, fp):
+        pass
+
+
+class TextGenerator(object):
+    
+    def __init__(self, text='fake'):
+        self.text = text
+
+    def gen(self, fp):
+        fp.write(self.text)
+
+
+class BinGenerator(object):
+    
+    def gen(self, fp):
+        pass
+
+
 class FakeCompiler(object):
 
-    def __init__(self, logger_name, log_path, contents='fake', dep_contents=''):
+    def __init__(self, logger_name, log_path, generator=None, dep_contents=''):
         self.out_path = ''
         self.dep_path = ''
         self.to_link = False
         self.logger = _Logger(logger_name, log_path)
-        self.contents = contents
+        self.generator = generator if generator else TextGenerator()
         self.dep_contents = dep_contents
 
     def compile(self):
@@ -58,7 +84,7 @@ class FakeCompiler(object):
                 self.to_link = True
         assert self.out_path, 'missing output path'
         with open(self.out_path, 'wb') as fp:
-            fp.write(self.contents)
+            self.generator.gen(fp)
         if self.dep_path:
             with open(self.dep_path, 'w') as fp:
                 fp.write(self.dep_contents)
@@ -67,9 +93,9 @@ class FakeCompiler(object):
 
 class FakeLinker(object):
 
-    def __init__(self, logger_name, log_file, contents='fake'):
+    def __init__(self, logger_name, log_file, generator=None):
         self.logger = _Logger(logger_name, log_file)
-        self.contents = contents
+        self.generator = generator if generator else TextGenerator()
         self.out_path = ''
 
     def link(self):
@@ -78,7 +104,7 @@ class FakeLinker(object):
                 self.out_path = sys.argv[idx + 1].split(',')[-1]
         assert self.out_path, 'missing output path'
         with open(self.out_path, 'wb') as fp:
-            fp.write(self.contents)
+            self.generator.gen(fp)
         self.logger.log_args()
 
 
