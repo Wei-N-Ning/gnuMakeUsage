@@ -62,7 +62,7 @@ class ObjGenerator(object):
         else:
             self.sources.append((idx, path, 'void {}(){{}}\n'.format(name)))
         
-    def _is_main(self, path)
+    def _is_main(self, path):
         for base_name in self.source_main:
             if path.endswith(base_name):
                 return True
