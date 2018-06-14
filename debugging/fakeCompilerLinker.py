@@ -98,6 +98,19 @@ class ObjGenerator(object):
             buf = fp.read()
         with open(file_path, 'wb') as fp:
             fp.write(buf)
+    
+    def _analyse_out_file(self, out_file):
+        if out_file.endswith('.o'):
+            self.out_type = 'obj'
+        elif out_file.endswith('.so'):
+            self.out_type = 'shared'
+        elif out_file.endswith('.a'):
+            self.out_type = 'static'
+        elif out_file.endswith('.d') or out_file.endswith('.r'):
+            # ignore dependency files for now
+            pass
+        else:
+            self.out_type = 'exe'
 
 
 class TextGenerator(object):
@@ -129,8 +142,7 @@ class FakeCompiler(object):
             elif '-Wl' in _ or _.startswith('-L') or _.startswith('-l'):
                 self.to_link = True
         assert self.out_path, 'missing output path'
-        with open(self.out_path, 'wb') as fp:
-            self.generator.gen(fp)
+        self.generator.gen(self.out_path)
         if self.dep_path:
             with open(self.dep_path, 'w') as fp:
                 fp.write(self.dep_contents)
@@ -149,8 +161,7 @@ class FakeLinker(object):
             if _ == '-o':
                 self.out_path = sys.argv[idx + 1].split(',')[-1]
         assert self.out_path, 'missing output path'
-        with open(self.out_path, 'wb') as fp:
-            self.generator.gen(fp)
+        self.generator.gen(self.out_path)
         self.logger.log_args()
 
 
