@@ -16,9 +16,10 @@ make CC=... CXX=... NVCC=... LD=...
 from __future__ import print_function
 
 import logging
+import os
 import sys
-
-import shlex
+import uuid
+import shutil
 import subprocess
 
 class _Logger(object):
@@ -42,11 +43,61 @@ class _Logger(object):
 
 class ObjGenerator(object):
     
-    def __init__(self, compl):
-        self.compl = compl
+    def __init__(self, compiler_exe, source_main=None, temp_dir='/tmp/dummysources'):
+        if os.path.isdir(temp_dir):
+            shutil.rmtree(temp_dir)
+        os.mkdir(temp_dir)
+        self.source_main = source_main if source_main else ['main.cc']
+        self.p = temp_dir
+        self.sources = list()
+        self.out_type = ''
+        self.compl = compiler_exe
+    
+    def generateDummySource(self, idx, is_main=False):
+        u = str(uuid.uuid4()).replace('-', '')
+        name = 'sub_{}'.format(u)
+        path = os.path.join(self.p, '{}.cc'.format(u))
+        if is_main:
+            self.sources.append((idx, path, 'int main(int argc, char** argv) {return 0;}'))
+        else:
+            self.sources.append((idx, path, 'void {}(){{}}\n'.format(name)))
+        
+    def _is_main(self, path)
+        for base_name in self.source_main:
+            if path.endswith(base_name):
+                return True
+        return False
 
-    def gen(self, fp):
-        pass
+    def gen(self, file_path):
+        out_file = ''
+        for idx, _ in enumerate(sys.argv):
+            if _.endswith('.cc') or _.endswith('.cu'):
+                self.generateDummySource(idx, is_main=self._is_main(_))
+                continue
+            if _.startswith('-o'):
+                out_file = sys.argv[idx + 1]
+                self._analyse_out_file(out_file)
+                continue
+        assert out_file
+        with open('/tmp/last', 'w') as fp:
+            fp.write(str(sys.argv))
+
+        for s in self.sources:
+            idx, path, content = s
+            with open(path, 'w') as fp:
+                fp.write(content)
+            sys.argv[idx] = path
+
+        args = [self.compl] + sys.argv[1:]
+        with open('/tmp/last', 'w') as fp:
+            fp.write(str(args))
+
+        assert 0 == subprocess.call(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        buf = ''
+        with open(out_file, 'rb') as fp:
+            buf = fp.read()
+        with open(file_path, 'wb') as fp:
+            fp.write(buf)
 
 
 class TextGenerator(object):
@@ -54,14 +105,9 @@ class TextGenerator(object):
     def __init__(self, text='fake'):
         self.text = text
 
-    def gen(self, fp):
-        fp.write(self.text)
-
-
-class BinGenerator(object):
-    
-    def gen(self, fp):
-        pass
+    def gen(self, file_path):
+        with open(file_path, 'wb') as fp:
+            fp.write(self.text)
 
 
 class FakeCompiler(object):
