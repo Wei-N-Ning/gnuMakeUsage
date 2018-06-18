@@ -80,19 +80,30 @@ class ObjGenerator(object):
                 continue
         assert out_file
         with open('/tmp/last', 'w') as fp:
+            fp.write('fake comp/ld is called with the following args:\n')
             fp.write(str(sys.argv))
 
         for s in self.sources:
             idx, path, content = s
-            with open(path, 'w') as fp:
+            with open(path, 'a') as fp:
+                fp.write('\nsource files:\n')
                 fp.write(content)
             sys.argv[idx] = path
 
         args = [self.compl] + sys.argv[1:]
         with open('/tmp/last', 'w') as fp:
+            fp.write('\nfake compl/ld is executed with the following args:\n')
             fp.write(str(args))
 
-        assert 0 == subprocess.call(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        ret = p.wait()
+        with open('/tmp/last', 'a') as fp:
+            fp.write('\stdout\n')
+            fp.write(p.stdout.read())
+            fp.write('\n////stderr////\n')
+            fp.write(p.stderr.read())
+        
+        assert 0 == ret, 'failed, check /tmp/last for details'
         buf = ''
         with open(out_file, 'rb') as fp:
             buf = fp.read()
