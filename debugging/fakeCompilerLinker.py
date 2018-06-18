@@ -82,11 +82,13 @@ class ObjGenerator(object):
         with open('/tmp/last', 'w') as fp:
             fp.write('fake comp/ld is called with the following args:\n')
             fp.write(str(sys.argv))
-
+        
+        with open('/tmp/last', 'a') as fp:
+            fp.write('\nsource files:\n')
+            fp.write(str(self.sources))
         for s in self.sources:
             idx, path, content = s
             with open(path, 'a') as fp:
-                fp.write('\nsource files:\n')
                 fp.write(content)
             sys.argv[idx] = path
 
