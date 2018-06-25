@@ -154,7 +154,11 @@ class FakeCompiler(object):
                 self.dep_path = _.split(',')[-1]
             elif '-Wl' in _ or _.startswith('-L') or _.startswith('-l'):
                 self.to_link = True
-        assert self.out_path, 'missing output path'
+        
+        # gcc/clang uses a.out as the default out path
+        # assert self.out_path, 'missing output path'
+        if not self.out_path:
+            self.out_path = './a.out'
         self.generator.gen(self.out_path)
         if self.dep_path:
             with open(self.dep_path, 'w') as fp:
