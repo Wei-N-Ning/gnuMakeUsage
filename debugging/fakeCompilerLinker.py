@@ -173,7 +173,11 @@ class FakeLinker(object):
         for idx, _ in enumerate(sys.argv):
             if _ == '-o':
                 self.out_path = sys.argv[idx + 1].split(',')[-1]
-        assert self.out_path, 'missing output path'
+        
+        # gcc/clang uses a.out as the default out path
+        # assert self.out_path, 'missing output path'
+        if not self.out_path:
+            self.out_path = './a.out'
         self.generator.gen(self.out_path)
         self.logger.log_args()
 
