@@ -31,6 +31,23 @@ the value of `PREFIX`:
 
 recall DA's makefiles heavily rely on this pass-by-cmd feature.
 
+### Example: install redis binaries
+
+```shell
+git clone https://github.com/redis/redis
+cd redis
+make all
+
+# install binaries to $HOME/.local; this directory is created by haskell
+# stack but I find it quite handy to be a general purpose location for
+# home-made binaries
+
+make install PREFIX=~/.local
+
+# the binaries are installed to $HOME/.local/bin (bin is created by
+# redis makefile)
+```
+
 ## Autoconf
 
 I need to run `./configure --prefix=<some>` to tell `make` where to
